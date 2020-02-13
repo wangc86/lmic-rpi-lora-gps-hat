@@ -1,13 +1,9 @@
 # lmic-rpi-lora-gps-hat
 
-Hardware Abstraction Layer (HAL) for IBM's LMIC 1.6 communication stack 
-targeted to RPi and Dragino LoRA/GPS HAT.
-
-The goal was to keep the LMIC 1.6 sourcecode untouched, and just provide a
-Hardware Abstraction Layer (HAL) for Raspberry Pi and Dragino LoRa/GPS HAT.
+Hardware Abstraction Layer (HAL) for RPi and Dragino LoRA/GPS HAT to work with LoRAWAN. The communication stack is based on IBM's LMIC 1.6, with some modification to fit the LoRAWAN 1.1 Regional Parameters for AS923.
 
 ## Supporting for AS923MHz ISM Band
-This code was forked from [wklenk/lmic-rpi-lora-gps-hat](https://github.com/wklenk/lmic-rpi-lora-gps-hat). The goal of this fork is to add supports for the AS923 channel plan to the Dragino LoRa/GPS HAT. It is intended to be used for research purposes in Taiwan (Band/channels 920-925 MHz).
+This code was forked from [wklenk/lmic-rpi-lora-gps-hat](https://github.com/wklenk/lmic-rpi-lora-gps-hat). The goal of this fork is to add supports for the AS923 channel plan to the Dragino LoRa/GPS HAT. It is intended to be used for research purposes in Taiwan (920-925 MHz band).
 
 This AS923 support is mostly based on the work for the Arduino-LMIC library, from [orenonline/arduino-lmic-as923](https://github.com/orenonline/arduino-lmic-as923).
 
