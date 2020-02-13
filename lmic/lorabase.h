@@ -161,6 +161,7 @@ enum {
     LEN_BCN          = 19
 };
 
+
 #elif defined(CFG_as923) // ==============================================
 
 enum _dr_as923_t { DR_SF12=0, DR_SF11, DR_SF10, DR_SF9, DR_SF8, DR_SF7, DR_SF7B, DR_FSK, DR_NONE };
@@ -168,22 +169,16 @@ enum { DR_DFLTMIN = DR_SF7 };
 enum { DR_PAGE = DR_PAGE_AS923 };
 
 // Default frequency plan for AS 923MHz ISM band
-// Bands:
-//  g1 :   1%  14dBm
-//  g2 : 0.1%  14dBm
-//  g3 :  10%  27dBm
 //                 freq             band     datarates
-//based on TTN arrangement
 
-enum { AS923_F1 = 923200000,      // g1   SF7-12
-       AS923_F2 = 923400000,      // g1   SF7-12 
-       AS923_F3 = 922200000,      // g1   SF7-12
-       AS923_F4 = 922400000,      // g2   SF7-12
-       AS923_F5 = 922600000,      // g2   SF7-12
-       AS923_F6 = 922800000,      // g3   SF7-12
-       AS923_J4 = 923000000,      // g2   SF7-12  
-       AS923_J5 = 922000000,      // g2   SF7-12   
-       AS923_J6 = 922100000,      // g2   SF7      
+enum { AS923_F1 = 923600000,      //      SF7-12
+       AS923_F2 = 923800000,      //      SF7-12 
+       AS923_F3 = 924000000,      //      SF7-12
+       AS923_F4 = 924200000,      //      SF7-12
+       AS923_F5 = 924400000,      //      SF7-12
+       AS923_F6 = 924600000,      //      SF7-12
+       AS923_J1 = 923200000,      //      SF7-12  
+       AS923_J2 = 923400000,      //      SF7-12   
 };
 
 enum { AS923_FREQ_MIN = 921000000,

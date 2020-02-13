@@ -58,8 +58,7 @@ enum { JOIN_GUARD_ms      =  9000 };  // msecs - don't start Join Req/Acc transa
 enum { TXRX_BCNEXT_secs   =     2 };  // secs - earliest start after beacon time
 enum { RETRY_PERIOD_secs  =     3 };  // secs - random period for retrying a confirmed send
 
-#if defined(CFG_eu868) || defined(CFG_as923) // EU868 spectrum ====================================================
-
+#if defined(CFG_eu868) // EU868 spectrum ====================================================
 enum { MAX_CHANNELS = 16 };      //!< Max supported channels
 enum { MAX_BANDS    =  4 };
 
@@ -73,8 +72,21 @@ struct band_t {
 };
 TYPEDEF_xref2band_t; //!< \internal
 
-#elif defined(CFG_us915)  // US915 spectrum =================================================
 
+#elif defined(CFG_as923) // AS923 spectrum ====================================================
+enum { MAX_CHANNELS = 8 };      // TODO: the regional parameters 1.1 says this shall be >= 16
+enum { MAX_BANDS = 4 };  // this specifies the possible duty cycles
+
+//! \internal
+struct band_t {
+    u2_t     txcap;     // duty cycle limitation: 1/txcap
+    s1_t     txpow;     // maximum TX power
+    u1_t     lastchnl;  // last used channel
+    ostime_t avail;     // channel is blocked until this time
+};
+TYPEDEF_xref2band_t; //!< \internal
+
+#elif defined(CFG_us915)  // US915 spectrum =================================================
 enum { MAX_XCHANNELS = 2 };      // extra channels in RAM, channels 0-71 are immutable 
 enum { MAX_TXPOW_125kHz = 30 };
 
