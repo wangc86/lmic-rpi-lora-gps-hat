@@ -26,6 +26,7 @@
  */
 
 //! \file
+#include <stdio.h>
 #include "lmic.h"
 
 #if !defined(MINRX_SYMS)
@@ -955,7 +956,7 @@ static ostime_t nextJoinState (void) {
 #elif defined(CFG_as923)
 // ================================================================================
 //
-// AS923 related stuff
+// BEG: AS923 related stuff
 //
 enum { NUM_DEFAULT_CHANNELS=2 };
 static const u4_t iniChannelFreq[8] = {
@@ -975,8 +976,8 @@ static void initDefaultChannels (bit_t join) {
     u1_t su = join ? 0 : NUM_DEFAULT_CHANNELS;
     
     // I guess one purpose of the following arrangement is to
-    // reassign the frequency of the default channels if the
-    // device has joined the network.
+    // to set the frequency of the default channels if the
+    // device is joining the network.
     // This would ensure those joined devices will never
     // occupy the default channels.
     // The reassignment is not even, however.
@@ -1135,9 +1136,10 @@ static void setBcnRxParams (void) {
 #if !defined(DISABLE_JOIN)
 
 static void initJoinLoop (void) {
-    LMIC.txChnl = os_getRndU1() % 3;
+    LMIC.txChnl = os_getRndU1() % NUM_DEFAULT_CHANNELS;
+    printf(" Joining via Channel %ld\n", LMIC.txChnl);
     LMIC.adrTxPow = 14;
-    setDrJoin(DRCHG_SET, DR_SF12);  //original SF is 7
+    setDrJoin(DRCHG_SET, DR_SF7);
     initDefaultChannels(1);
     ASSERT((LMIC.opmode & OP_NEXTCHNL)==0);
     LMIC.txend = LMIC.bands[BAND_MILLI].avail + rndDelay(8);
@@ -1148,13 +1150,9 @@ static ostime_t nextJoinState (void) {
 
     u1_t failed = 0;
 
-    // TODO:: put right comments ... Try 869.x and then 864.x with same DR
-    // If both fail try next lower datarate
-
-    if( ++LMIC.txChnl == 3 )
+    if( ++LMIC.txChnl == NUM_DEFAULT_CHANNELS )
         LMIC.txChnl = 0;
-    if( (++LMIC.txCnt & 1) == 0 ) {
-        // TODO:: put right comments ... Lower DR every 2nd try (having tried 868.x and 864.x with the same DR)
+    if( (++LMIC.txCnt & 1) == 0 ) { // Lower DR every 2nd try
         if( LMIC.datarate == DR_SF12 )
             failed = 1; // we have tried all DR - signal EV_JOIN_FAILED
         else
@@ -1683,7 +1681,7 @@ static bit_t processJoinAccept (void) {
     LMIC.netid = os_rlsbf4(&LMIC.frame[OFF_JA_NETID]) & 0xFFFFFF;
 
 #if defined(CFG_eu868) || defined(CFG_as923)
-    initDefaultChannels(0); // 0 means not joined yet
+    initDefaultChannels(0); // so that we won't occupy the default channels 
 #endif
     if( dlen > LEN_JA ) {
 #if defined(CFG_us915)
